@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     String TAG = MainActivity.class.getSimpleName();
     int secret = new Random().nextInt(10) + 1;
     private TextView number;
+    String counter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,11 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                int secret2 = new Random().nextInt(10) + 1;
+                secret = secret2;
+                Log.d(TAG, "secret: " + secret2);
+                counter = "";
+                number.setText(String.valueOf(counter));
             }
         });
     }
