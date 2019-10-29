@@ -1,9 +1,11 @@
 package com.sen.guess;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -21,12 +23,16 @@ public class MainActivity extends AppCompatActivity {
     int secret = new Random().nextInt(10) + 1;
     private TextView number;
     String counter;
+    int TextView = 0;
+    private android.widget.TextView edCounter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG, "secret: " + secret);
+        edCounter = findViewById(R.id.TextView);
+        edCounter.setText(TextView + "");
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         number = findViewById(R.id.guess);
@@ -45,12 +51,38 @@ public class MainActivity extends AppCompatActivity {
 
     public void test(View view) {
         int num = Integer.parseInt(number.getText().toString());
+        TextView++;
+        edCounter.setText(TextView+"");
+
+        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                TextView = 0;
+                edCounter.setText(TextView+"");
+            }
+        };
+
         if (num > secret) {
             Toast.makeText(MainActivity.this, "smaller", Toast.LENGTH_LONG).show();
+            new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("Hint")
+                    .setMessage("smaller")
+                    .setPositiveButton("OK",null)
+                    .show();
         } else if (num < secret) {
             Toast.makeText(MainActivity.this, "largerer", Toast.LENGTH_LONG).show();
+            new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("Hint")
+                    .setMessage("larger")
+                    .setPositiveButton("OK", null)
+                    .show();
         } else {
             Toast.makeText(MainActivity.this, "You guess it!", Toast.LENGTH_LONG).show();
+            new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("Hint")
+                    .setMessage("You guess it!")
+                    .setPositiveButton("OK",listener)
+                    .show();
 
         }
     }
